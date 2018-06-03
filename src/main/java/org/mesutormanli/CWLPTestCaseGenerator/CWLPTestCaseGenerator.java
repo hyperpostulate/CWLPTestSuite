@@ -19,16 +19,16 @@ public class CWLPTestCaseGenerator {
     public static void main(String[] args) {
         Instant start = Instant.now();
 
-        //TestCaseForCWLP [] smallInstances;
-        //TestCaseForCWLP [] mediumInstances;
+        TestCaseForCWLP [] smallInstances;
+        TestCaseForCWLP [] mediumInstances;
         TestCaseForCWLP [] largeInstances;
 
-        //smallInstances = generateSmallInstances();
-        //mediumInstances = generateMediumInstances();
+        smallInstances = generateSmallInstances();
+        mediumInstances = generateMediumInstances();
         largeInstances = generateLargeInstances();
 
-        //printInstances("small", smallInstances);
-        //printInstances("medium", mediumInstances);
+        printInstances("small", smallInstances);
+        printInstances("medium", mediumInstances);
         printInstances("large", largeInstances);
 
         Instant end = Instant.now();
@@ -64,7 +64,7 @@ public class CWLPTestCaseGenerator {
     public static void printInstances(String type, TestCaseForCWLP [] instances){
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(type + "-instances-output.txt", "UTF-8");
+            writer = new PrintWriter("./target/test-case-outputs/" + type + "-instances-output.txt", "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }

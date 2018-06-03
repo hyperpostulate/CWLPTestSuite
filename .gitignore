@@ -2,3 +2,7 @@
 \.idea/
 
 *.iml
+
+*.class
+
+target/test-case-outputs/
