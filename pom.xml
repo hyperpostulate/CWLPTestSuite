@@ -20,5 +20,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+    <dependency>
+        <groupId>gurobi</groupId>
+        <artifactId>gurobi</artifactId>
+        <scope>system</scope>
+        <version>1.0</version>
+        <systemPath>${basedir}\lib\gurobi.jar</systemPath>
+    </dependency>
+</dependencies>
     
 </project>
