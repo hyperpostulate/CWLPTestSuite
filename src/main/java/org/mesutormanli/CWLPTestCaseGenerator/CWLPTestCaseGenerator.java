@@ -11,9 +11,9 @@ public class CWLPTestCaseGenerator {
     static final double [] cInterval = {0.2, 1}; //Interval for test case parameter c.
     static final double [] fInterval = {3600, 7200}; //Interval for test case parameter f.
 
-    static final int [] parametersForSmallInstances = {1000, 10};
-    static final int [] parametersForMediumInstances = {2000, 20};
-    static final int [] parametersForLargeInstances = {5000, 50};
+    static final int [] parametersForSmallInstances = {10, 1000};
+    static final int [] parametersForMediumInstances = {20, 2000};
+    static final int [] parametersForLargeInstances = {50, 5000};
 
 
     public static void main(String[] args) {

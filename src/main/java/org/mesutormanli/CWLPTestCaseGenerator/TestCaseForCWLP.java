@@ -4,14 +4,19 @@ import java.util.Random;
 
 public class TestCaseForCWLP {
 
+    private int numberOfWarehouses;
+    private int numberOfCustomers;
     private int [] a; //Maximum capacity (in units) for each of the warehouses.
     private int [] d; //Demands (in units) for each of the customers.
     private double [][] c; //Cost of transporting one unit of good from warehouse i to customer j.
     private double [] f;  //Fixed cost of operating warehouse i if it is opened.
 
+
     Random random = new Random();
 
     public TestCaseForCWLP(int numberOfWarehouses, int numberOfCustomers, int[] aInterval, int[] dInterval, double[] cInterval, double[] fInterval) {
+        this.numberOfWarehouses = numberOfWarehouses;
+        this.numberOfCustomers = numberOfCustomers;
         generateA(numberOfWarehouses, aInterval);
         generateD(numberOfCustomers, dInterval);
         generateC(numberOfWarehouses, numberOfCustomers, cInterval);
@@ -38,6 +43,22 @@ public class TestCaseForCWLP {
 
     public void generateF (int numberOfWarehouses, double[] fInterval ){
         setF(random.doubles(numberOfWarehouses, fInterval[0], fInterval[1]+1).toArray());
+    }
+
+    public int getNumberOfWarehouses() {
+        return numberOfWarehouses;
+    }
+
+    public void setNumberOfWarehouses(int numberOfWarehouses) {
+        this.numberOfWarehouses = numberOfWarehouses;
+    }
+
+    public int getNumberOfCustomers() {
+        return numberOfCustomers;
+    }
+
+    public void setNumberOfCustomers(int numberOfCustomers) {
+        this.numberOfCustomers = numberOfCustomers;
     }
 
     public int[] getA() {
