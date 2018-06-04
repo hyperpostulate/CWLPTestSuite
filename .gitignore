@@ -6,3 +6,5 @@
 *.class
 
 target/test-case-outputs/
+
+target/gurobi-solver-outputs/

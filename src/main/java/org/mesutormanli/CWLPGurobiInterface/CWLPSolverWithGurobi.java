@@ -4,15 +4,42 @@ import gurobi.*;
 import org.mesutormanli.CWLPTestCaseGenerator.CWLPTestCaseGenerator;
 import org.mesutormanli.CWLPTestCaseGenerator.TestCaseForCWLP;
 
+import java.io.PrintWriter;
+
 public class CWLPSolverWithGurobi {
     public static void main(String[] args) {
-        TestCaseForCWLP[] smallInstances = CWLPTestCaseGenerator.generateSmallInstances();
-        for (TestCaseForCWLP instance : smallInstances) {
-            solve(instance);
+        PrintWriter smallInstancesWriter = null;
+        //PrintWriter mediumInstancesWriter = null;
+        //PrintWriter largeInstancesWriter = null;
+        try {
+            smallInstancesWriter = new PrintWriter("./target/gurobi-solver-outputs/small-instances-output.txt", "UTF-8");
+            //mediumInstancesWriter = new PrintWriter("./target/gurobi-solver-outputs/medium-instances-output.txt", "UTF-8");
+            //largeInstancesWriter = new PrintWriter("./target/gurobi-solver-outputs/large-instances-output.txt", "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        TestCaseForCWLP[] smallInstances = CWLPTestCaseGenerator.generateSmallInstances();
+        smallInstancesWriter.println("Gurobi Solver Started for SMALL Instances");
+        smallInstancesWriter.println("------------------------------");
+        for (int i = 0; i<smallInstances.length; i++) {
+            solveWithGurobi(smallInstances[i], smallInstancesWriter, i);
+        }
+//        TestCaseForCWLP[] mediumInstances = CWLPTestCaseGenerator.generateMediumInstances();
+//        mediumInstancesWriter.println("Gurobi Solver Started for MEDIUM Instances");
+//        mediumInstancesWriter.println("------------------------------");
+//        for (int i = 0; i<mediumInstances.length; i++) {
+//            solveWithGurobi(mediumInstances[i], mediumInstancesWriter, i);
+//        }
+//        TestCaseForCWLP[] largeInstances = CWLPTestCaseGenerator.generateLargeInstances();
+//        largeInstancesWriter.println("Gurobi Solver Started for LARGE Instances");
+//        largeInstancesWriter.println("------------------------------");
+//        for (int i = 0; i<largeInstances.length; i++) {
+//            solveWithGurobi(largeInstances[i], largeInstancesWriter, i);
+//        }
     }
 
-    public static void solve(TestCaseForCWLP testCase) {
+    public static void solveWithGurobi(TestCaseForCWLP testCase, PrintWriter writer, int indexOfInstance) {
         {
             try {
 
@@ -88,7 +115,7 @@ public class CWLPSolverWithGurobi {
                 }
 
                 // Now close the warehouse with the highest fixed cost
-                System.out.println("Initial guess:");
+                writer.println("Initial guess:");
                 double maxFixed = -GRB.INFINITY;
                 for (int w = 0; w < nWarehouses; w++) {
                     if (FixedCosts[w] > maxFixed) {
@@ -98,7 +125,7 @@ public class CWLPSolverWithGurobi {
                 for (int w = 0; w < nWarehouses; w++) {
                     if (FixedCosts[w] == maxFixed) {
                         open[w].set(GRB.DoubleAttr.Start, 0.0);
-                        System.out.println("Closing warehouse " + w + "\n");
+                        writer.println("Closing warehouse " + w + "\n");
                         break;
                     }
                 }
@@ -110,20 +137,22 @@ public class CWLPSolverWithGurobi {
                 model.optimize();
 
                 // Print solution
-                System.out.println("\nTOTAL COSTS: " + model.get(GRB.DoubleAttr.ObjVal));
-                System.out.println("SOLUTION:");
+                writer.println("Gurobi Output for Instance[" + indexOfInstance + "]: ");
+                writer.println("------------------------------");
+                writer.println("\nTOTAL COSTS: " + model.get(GRB.DoubleAttr.ObjVal));
+                writer.println("SOLUTION:");
                 for (int w = 0; w < nWarehouses; w++) {
                     if (open[w].get(GRB.DoubleAttr.X) > 0.99) {
-                        System.out.println("Warehouse " + w + " open:");
+                        writer.println("Warehouse " + w + " open:");
                         for (int c = 0; c < nCustomers; c++) {
                             if (transport[w][c].get(GRB.DoubleAttr.X) > 0.0001) {
-                                System.out.println("  Transport " +
+                                writer.println("  Transport " +
                                         transport[w][c].get(GRB.DoubleAttr.X) +
                                         " units to customer " + c);
                             }
                         }
                     } else {
-                        System.out.println("Warehouse " + w + " closed!");
+                        writer.println("Warehouse " + w + " closed!");
                     }
                 }
 
@@ -132,7 +161,7 @@ public class CWLPSolverWithGurobi {
                 env.dispose();
 
             } catch (GRBException e) {
-                System.out.println("Error code: " + e.getErrorCode() + ". " +
+                writer.println("Error code: " + e.getErrorCode() + ". " +
                         e.getMessage());
             }
         }
