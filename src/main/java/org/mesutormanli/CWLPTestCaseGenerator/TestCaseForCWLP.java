@@ -28,7 +28,6 @@ public class TestCaseForCWLP {
     }
 
     public void generateD (int numberOfCustomers, int[] dInterval){
-        //TODO: check constraint
         setD(random.ints(numberOfCustomers, dInterval[0], dInterval[1]+1).toArray());
     }
 

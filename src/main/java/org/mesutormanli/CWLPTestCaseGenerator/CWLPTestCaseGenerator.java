@@ -23,16 +23,17 @@ public class CWLPTestCaseGenerator {
         TestCaseForCWLP [] mediumInstances;
         TestCaseForCWLP [] largeInstances;
 
-        smallInstances = generateSmallInstances();
-        mediumInstances = generateMediumInstances();
-        largeInstances = generateLargeInstances();
-
-        printInstances("small", smallInstances);
-        printInstances("medium", mediumInstances);
-        printInstances("large", largeInstances);
+        generateSmallInstances();
+        Instant afterSmallInstances = Instant.now();
+        generateMediumInstances();
+        Instant afterMediumInstances = Instant.now();
+        generateLargeInstances();
 
         Instant end = Instant.now();
-        System.out.println("Elapsed time: " + Duration.between(start, end));
+        System.out.println("Elapsed time for generating SMALL instances: " + Duration.between(start, afterSmallInstances));
+        System.out.println("Elapsed time for generating MEDIUM instances: " + Duration.between(afterSmallInstances, afterMediumInstances));
+        System.out.println("Elapsed time for generating LARGE instances: " + Duration.between(afterMediumInstances, end));
+        System.out.println("Elapsed time for generating ALL instances: " + Duration.between(start, end));
 
     }
 
@@ -41,6 +42,7 @@ public class CWLPTestCaseGenerator {
         for (int i = 0, smallInstancesLength = smallInstances.length; i < smallInstancesLength; i++) {
             smallInstances[i] = new TestCaseForCWLP(parametersForSmallInstances[0], parametersForSmallInstances[1], aInterval, dInterval, cInterval, fInterval);
         }
+        printInstances("small" , smallInstances);
         return smallInstances;
 
     }
@@ -50,6 +52,7 @@ public class CWLPTestCaseGenerator {
         for (int i = 0, mediumInstancesLength = mediumInstances.length; i < mediumInstancesLength; i++) {
             mediumInstances[i] = new TestCaseForCWLP(parametersForMediumInstances[0], parametersForMediumInstances[1], aInterval, dInterval, cInterval, fInterval);
         }
+        printInstances("medium" , mediumInstances);
         return mediumInstances;
     }
 
@@ -58,6 +61,7 @@ public class CWLPTestCaseGenerator {
         for (int i = 0, largeInstancesLength = largeInstances.length; i < largeInstancesLength; i++) {
             largeInstances[i] = new TestCaseForCWLP(parametersForLargeInstances[0], parametersForLargeInstances[1], aInterval, dInterval, cInterval, fInterval);
         }
+        printInstances("large" , largeInstances);
         return largeInstances;
     }
 
