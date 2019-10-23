@@ -7,3 +7,6 @@ Requirements:
 Java 8+
 
 Gurobi MIP Solver
+
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
